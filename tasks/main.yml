@@ -1,7 +1,17 @@
 ---
-- name: Install PECL libaries.
-  shell: "yes \"\" | pecl install {{ item }}"
-  register: pecl_result
-  changed_when: "pecl_result.rc == 0"
-  failed_when: "not (('already installed' in pecl_result.stdout) or ('install ok:' in pecl_result.stdout))"
-  with_items: php_pecl_extensions
+- include: tasks/oah-install.yml
+  when: oah_command == "install"
+
+- include: tasks/oah-update.yml
+  when: oah_command == "update"
+
+- include: tasks/oah-remove.yml
+  when: oah_command == "remove"
+
+- include: tasks/oah-reset.yml
+  when: oah_command == "reset"
+
+- include: tasks/oah-validate.yml
+  when: oah_command == "validate"
+
+#- include: tasks/oah-{{ oah_command }}.yml
